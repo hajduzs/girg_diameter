@@ -1,0 +1,45 @@
+FROM alpine:latest
+
+# bash for scripts + to interact with the container
+RUN apk add --no-cache bash
+
+# c++ dependencies
+RUN apk add --no-cache git g++ cmake make libgomp
+
+# code
+RUN apk add --no-cache git
+RUN git clone https://github.com/thobl/external-validity.git ext_val
+WORKDIR /ext_val
+RUN git submodule init
+RUN git submodule update
+
+# python dependencies
+RUN apk add --no-cache python3 py3-pip
+WORKDIR /ext_val/run
+RUN pip3 install .
+WORKDIR /ext_val
+
+# building c++
+RUN ./build.sh
+
+# LaTeX font for the plots
+RUN wget http://www.gust.org.pl/projects/e-foundry/latin-modern/download/lm2.004otf.zip &&\
+    unzip -p lm2.004otf.zip lmroman10-regular.otf > lmroman10-regular.otf &&\
+    rm lm2.004otf.zip
+
+# R dependencies
+RUN apk add --no-cache R R-dev linux-headers freetype-dev
+RUN R -e 'install.packages(c("ggplot2"), repos="https://cloud.r-project.org/")'
+RUN R -e 'install.packages(c("ggpubr"), repos="https://cloud.r-project.org/")'
+RUN R -e 'install.packages(c("egg"), repos="https://cloud.r-project.org/")'
+RUN R -e 'install.packages(c("showtext"), repos="https://cloud.r-project.org/")'
+RUN R -e 'install.packages(c("xtable", "plotly"), repos="https://cloud.r-project.org/")'
+RUN R -e 'install.packages(c("GGally"), repos="https://cloud.r-project.org/")'
+RUN R -e 'install.packages(c("dplyr", "plotly"), repos="https://cloud.r-project.org/")'
+RUN R -e 'install.packages(c("plotly"), repos="https://cloud.r-project.org/")'
+
+# check whether R dependencies have been installed correctly
+RUN Rscript R/helper/load_dependencies.R
+
+# keeping the container running
+ENTRYPOINT tail -f /dev/null

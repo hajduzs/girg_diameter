@@ -1,0 +1,7 @@
+__pycache__
+output_data*
+input_data
+.Rhistory
+.cache
+.vscode
+data_packages
