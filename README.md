@@ -2,7 +2,7 @@
 
 This repository contains code, based on the original implementation by Thomas Bläsius and Philipp Fischbeck, to reproduce our experiments from our semester project at ETH. In this project, we investigated the iFUB algorithm and the diameter in the GIRG model. 
 
-Authors: Zsombor Hajdu, Liu Haitong 
+Authors: Zsombor Hajdu, Haitong Liu
 
 Supervisor: Johannes Lengler
 
