@@ -19,7 +19,7 @@ To incorporate a new experiment, the following modifications are required:
 
 ## Using Euler
 
-Once the codebase is prepared for new experiments and tested locally, upload it to your `$SCRATCH` folder on Euler (excluding `input_data`, `output_data`, and `code/release` directories, as they are not required).
+Once the codebase is prepared for new experiments and tested locally, upload it to your `$SCRATCH` folder on Euler (excluding `input_data`, `output_data`, and `code/release` directories, as they contain the experiment data / binaries).
 
 On Euler, navigate to the directory containing the code and load the necessary modules:
 
@@ -31,6 +31,13 @@ Then, build the project using:
 
 ```sh
 sh ./build.sh
+```
+
+And create the dictionary for the script to generate the raw graphs into:
+
+```sh
+mkdir input_data
+mkdir input_data/raw
 ```
 
 To run the project, use `sbatch`:
